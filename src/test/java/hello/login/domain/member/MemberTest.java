@@ -1,6 +1,5 @@
-package hello.login.domain;
+package hello.login.domain.member;
 
-import hello.login.domain.member.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

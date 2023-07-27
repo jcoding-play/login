@@ -29,6 +29,10 @@ public class Member {
         return this.password.equals(password);
     }
 
+    public boolean isDuplicatedLoginId(Member member) {
+        return member.isLoginIdMatch(loginId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
