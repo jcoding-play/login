@@ -45,4 +45,14 @@ public class Member {
     public int hashCode() {
         return Objects.hash(name, loginId, password, id);
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "name='" + name + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
