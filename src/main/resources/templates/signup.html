@@ -44,6 +44,12 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" href="../css/util.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" href="../css/main.css">
 <!--===============================================================================================-->
+	<style>
+		.field-error {
+			border-color: #dc3545;
+			color: #dc3545;
+		}
+	</style>
 </head>
 <body>
 	
@@ -56,27 +62,35 @@
 						회원 가입
 					</span>
 
+					<div th:if="${#fields.hasGlobalErrors()}">
+						<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+					</div>
+
 					<div class="wrap-input100 validate-input m-b-23" data-validate = "이름은 필수 값입니다.">
 						<span class="label-input100">이름</span>
-						<input class="input100" type="text" th:field="*{username}" placeholder="이름을 입력해주세요.">
+						<input class="input100" th:errorclass="field-error" type="text" th:field="*{username}" placeholder="이름을 입력해주세요.">
+						<div class="field-error" th:errors="*{username}"></div>
 						<span class="focus-input100" data-symbol="&#xf206;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-23" data-validate = "아이디는 필수 값입니다.">
 						<span class="label-input100">아이디</span>
-						<input class="input100" type="text" th:field="*{loginId}" placeholder="아이디를 입력해주세요.">
+						<input class="input100" th:errorclass="field-error" type="text" th:field="*{loginId}" placeholder="아이디를 입력해주세요.">
+						<div class="field-error" th:errors="*{loginId}"></div>
 						<span class="focus-input100" data-symbol="&#xf206;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-23" data-validate="비밀번호는 필수 값입니다.">
 						<span class="label-input100">비밀번호</span>
-						<input class="input100" type="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요.">
+						<input class="input100" th:errorclass="field-error" type="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요.">
+						<div class="field-error" th:errors="*{password}"></div>
 						<span class="focus-input100" data-symbol="&#xf190;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-23" data-validate="비밀번호는 필수 값입니다.">
 						<span class="label-input100">비밀번호 확인</span>
-						<input class="input100" type="password" th:field="*{confirmPassword}" placeholder="비밀번호를 다시 입력해주세요.">
+						<input class="input100" th:errorclass="field-error" type="password" th:field="*{confirmPassword}" placeholder="비밀번호를 다시 입력해주세요.">
+						<div class="field-error" th:errors="*{password}"></div>
 						<span class="focus-input100" data-symbol="&#xf190;"></span>
 					</div>
 
