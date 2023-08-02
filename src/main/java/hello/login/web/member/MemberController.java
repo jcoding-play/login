@@ -6,6 +6,8 @@ import hello.login.web.member.form.MemberSaveForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/members")
 public class MemberController {
+    private static final int MIN_LENGTH_OF_NAME = 1;
+    private static final int MAX_LENGTH_OF_NAME = 10;
+    private static final int MAX_LENGTH_OF_LOGIN_ID = 10;
+    private static final int MAX_LENGTH_OF_PASSWORD = 10;
+
     private final MemberService memberService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -27,20 +34,38 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute("member") MemberSaveForm form) {
+    public String save(@Validated @ModelAttribute("member") MemberSaveForm form, BindingResult bindingResult) {
         String name = form.getUsername();
         String loginId = form.getLoginId();
         String password = form.getPassword();
         String confirmPassword = form.getConfirmPassword();
 
         if (!password.equals(confirmPassword)) {
-            log.info("비밀번호가 일치하지 않습니다.");
+            bindingResult.reject("inconsistentPassword", "비밀번호가 일치하지 않습니다.");
+        }
+        if (name.length() < MIN_LENGTH_OF_NAME || name.length() > MAX_LENGTH_OF_NAME) {
+            bindingResult.rejectValue("username", "length", new Object[]{1, 10}, "이름의 최대 길이를 벗어났습니다.");
+        }
+        if (loginId.length() > MAX_LENGTH_OF_LOGIN_ID) {
+            bindingResult.rejectValue("loginId", "length", new Object[]{10}, "로그인 아이디는 최대 10까지 입력 가능합니다.");
+        }
+        if (password.length() > MAX_LENGTH_OF_PASSWORD) {
+            bindingResult.rejectValue("password", "length", new Object[]{10}, "비밀번호는 최대 10까지 입력 가능합니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
             return "signup";
         }
 
         Member member = new Member(name, loginId, password);
-        memberService.join(member);
-
-        return "redirect:/login";
+        try {
+            memberService.join(member);
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            bindingResult.reject("duplicate", new Object[]{loginId}, "이미 이용중인 아이디입니다.");
+            log.info("errors={}", bindingResult);
+            return "signup";
+        }
     }
 }
