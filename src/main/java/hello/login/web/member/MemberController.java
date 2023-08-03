@@ -43,15 +43,6 @@ public class MemberController {
         if (!password.equals(confirmPassword)) {
             bindingResult.reject("inconsistentPassword", "비밀번호가 일치하지 않습니다.");
         }
-        if (name.length() < MIN_LENGTH_OF_NAME || name.length() > MAX_LENGTH_OF_NAME) {
-            bindingResult.rejectValue("username", "length", new Object[]{1, 10}, "이름의 최대 길이를 벗어났습니다.");
-        }
-        if (loginId.length() > MAX_LENGTH_OF_LOGIN_ID) {
-            bindingResult.rejectValue("loginId", "length", new Object[]{10}, "로그인 아이디는 최대 10까지 입력 가능합니다.");
-        }
-        if (password.length() > MAX_LENGTH_OF_PASSWORD) {
-            bindingResult.rejectValue("password", "length", new Object[]{10}, "비밀번호는 최대 10까지 입력 가능합니다.");
-        }
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
