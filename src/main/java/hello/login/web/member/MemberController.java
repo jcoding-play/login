@@ -16,11 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/members")
 public class MemberController {
-    private static final int MIN_LENGTH_OF_NAME = 1;
-    private static final int MAX_LENGTH_OF_NAME = 10;
-    private static final int MAX_LENGTH_OF_LOGIN_ID = 10;
-    private static final int MAX_LENGTH_OF_PASSWORD = 10;
-
     private final MemberService memberService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
