@@ -15,6 +15,6 @@ public class LoginService {
     public Member login(String loginId, String password) {
         return memberService.findMember(loginId)
                 .filter(member -> member.isPasswordMatch(password))
-                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+                .orElse(null);
     }
 }

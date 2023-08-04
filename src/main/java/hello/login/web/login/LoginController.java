@@ -26,13 +26,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute LoginForm form) {
-        try {
-            Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
-            log.info("loginMember={}", loginMember);
-            return "success";
-        } catch (IllegalArgumentException e) {
-            log.info("login fail={}", e.getMessage());
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+        log.info("loginMember={}", loginMember);
+
+        if (loginMember == null) {
             return "login";
         }
+        return "success";
     }
 }
