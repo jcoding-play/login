@@ -42,13 +42,12 @@ class LoginServiceTest {
     }
 
     @Test
-    @DisplayName("입력된 로그인 아이디와 비밀번호가 일치하는 회원이 없다면 예외가 발생한다.")
+    @DisplayName("입력된 로그인 아이디와 비밀번호가 일치하는 회원이 없다면 null을 반환한다.")
     void loginFail() {
         Member firstMember = new Member("first", "userA", "test!");
         memberRepository.save(firstMember);
 
-        assertThatThrownBy(() -> loginService.login("userA", "test"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("아이디 또는 비밀번호가 일치하지 않습니다.");
+        Member loginMember = loginService.login("userA", "test");
+        assertThat(loginMember).isNull();
     }
 }
