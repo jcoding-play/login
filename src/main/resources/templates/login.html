@@ -44,6 +44,12 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" href="../static/css/util.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" href="../static/css/main.css">
 <!--===============================================================================================-->
+	<style>
+		.field-error {
+			border-color: #dc3545;
+			color: #dc3545;
+		}
+	</style>
 </head>
 <body>
 	
@@ -54,6 +60,10 @@
 					<span class="login100-form-title p-b-49">
 						로그인
 					</span>
+
+					<div th:if="${#fields.hasGlobalErrors()}">
+						<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+					</div>
 
 					<div class="wrap-input100 validate-input m-b-23" data-validate = "아이디는 필수 값입니다.">
 						<span class="label-input100">아이디</span>
